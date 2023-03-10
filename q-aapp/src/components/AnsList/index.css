@@ -1,0 +1,18 @@
+.ans-btn {
+  background: transparent;
+  border: none;
+  outline: none !important;
+}
+.ans {
+  color: #dc991f;
+}
+
+.ans-box {
+  border: 1px solid #dc991f;
+}
+.d-inline {
+  text-decoration: underline;
+}
+.wid {
+  width: 70px;
+}

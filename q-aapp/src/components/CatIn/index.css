@@ -1,0 +1,8 @@
+.faq-heading {
+  font-size: 24px;
+  padding: 0;
+}
+.container-fluid {
+  min-height: 100vh;
+  padding: 1rem !important;
+}

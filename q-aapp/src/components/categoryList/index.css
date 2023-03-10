@@ -1,0 +1,42 @@
+.close-open {
+  background-color: transparent;
+  border: none;
+  outline: none !important;
+  cursor: pointer;
+  transition: all 1s ease-out;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+}
+.pre-class {
+  color: rgb(216, 150, 26);
+  font-weight: bolder;
+}
+.c-name {
+  color: black;
+  display: inline;
+}
+.lighter {
+  font-weight: lighter;
+  color: gray;
+}
+.arround {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+h3 {
+  color: #dc991f;
+}
+.unactive {
+  text-decoration: line-through;
+  color: gray;
+}
+.head-size {
+  font-size: 18px;
+}
+.curser {
+  cursor: pointer;
+}

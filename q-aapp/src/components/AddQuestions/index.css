@@ -1,0 +1,35 @@
+.question-form {
+  border: 1px solid rgb(222, 137, 72);
+  border-radius: 20px;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  /* -webkit-transition: opacity 2s ease-in; */
+  transition: opacity 2s ease-in-out, height 0.5s ease-in;
+}
+.opening {
+  opacity: 1;
+  height: 100px;
+}
+@media all and (max-width: 900px) {
+  .opening {
+    opacity: 1;
+    height: 180px;
+  }
+}
+.question-input {
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid orange;
+}
+.question-input::after {
+  content: "?";
+}
+.add-button {
+  position: relative;
+  top: 0;
+  left: 45%;
+  right: 45%;
+  align-self: center;
+  margin: 10px;
+}
