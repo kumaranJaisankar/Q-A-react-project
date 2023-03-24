@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { withRouter } from "react-router-dom";
 import { v4 } from "uuid";
 import {
   AiFillCloseCircle,
@@ -11,29 +12,15 @@ import "./index.css";
 import AnsList from "../AnsList/ansList";
 import CategoryCont from "../categoryContainer/container";
 import AddQuestion from "../AddQuestions/addquestion";
+import { Tooltip } from "primereact/tooltip";
 
-const questionList = {
-  questionTypeList: [
-    "TEXT",
-    "DROPDOWN",
-    "RADIO",
-    "MULTICHECK",
-    "INTEGER",
-    "NUMBER",
-  ],
-  isRequired: null,
-  questionType: "TEXT",
-  defaultAnswer: null,
-  answer: {
-    textAnswer: "Rohit Kumar",
-    intAnswer: null,
-    floatAnswer: null,
-    selectedChoices: null,
-    evalScore: null,
-  },
-  choices: null,
-  questionText: "What is your name",
-};
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+
+//core
+import "primereact/resources/primereact.min.css";
+
+//icons
+import "primeicons/primeicons.css";
 
 const CategoryList = (props) => {
   const [toggler, clickTogle] = useState({
@@ -43,7 +30,7 @@ const CategoryList = (props) => {
   });
   const { categoryDetail } = props;
   console.log(categoryDetail);
-  const { first, name, intScore, questions, subCategories } = categoryDetail;
+  const { first, name, questions, subCategories } = categoryDetail;
 
   const clickingBtn = () => {
     console.log(questions);
@@ -59,6 +46,8 @@ const CategoryList = (props) => {
   //   console.log(id);
   //   btnClicked(id);
   // };
+  const { history } = props;
+  const isCurrent = history.location.pathname === "/default";
 
   const triggerOpenClose = () => {
     clickTogle({ ...toggler, currentActive: !toggler.currentActive });
@@ -74,17 +63,22 @@ const CategoryList = (props) => {
   };
 
   return (
-    <li className="outer mb-2 bg-light shadow-lg rounded-lg p-3">
+    <li className="outer mb-2  p-3">
       <div
         className="d-flex flex-row curser justify-content-between"
         onClick={triggerOpenClose}
       >
         <h3 className="head-size">{first}</h3>
-        <button className="close-open mr-5" type="button">
+        <Tooltip target=".close-open" mouseTrackLeft={10} />
+        <button
+          data-pr-tooltip={!toggler.currentActive ? "open" : "close"}
+          className="close-open mr-5"
+          type="button"
+        >
           {toggler.currentActive ? (
-            <AiOutlineMinus size={25} color="rgb(216, 150, 26)" />
+            <AiOutlineMinus size={25} color="#125398" />
           ) : (
-            <AiOutlineDown size={25} color="rgb(216, 150, 26)" />
+            <AiOutlineDown size={25} color="#125398" />
           )}
         </button>
       </div>
@@ -118,26 +112,34 @@ const CategoryList = (props) => {
                 <div className="arround">
                   <h6 className="pre-class font-weight-bold">Questions</h6>
 
-                  <button
-                    className="close-open mr-5"
-                    type="button"
-                    onClick={clickingBtn}
+                  {isCurrent && (
+                    <>
+                      <Tooltip target=".close-open" />
+                      <button
+                        className="close-open mr-5"
+                        data-pr-tooltip={
+                          !toggler.ans ? "add question" : "close"
+                        }
+                        data-pr-position="top"
+                        type="button"
+                        onClick={clickingBtn}
+                      >
+                        {toggler.ans ? (
+                          <AiFillCloseCircle size={25} color="#125398" />
+                        ) : (
+                          <AiOutlinePlusCircle size={25} color="#125398" />
+                        )}
+                      </button>
+                    </>
+                  )}
+                </div>
+                {isCurrent && (
+                  <div
+                    className={`question-form mt-1 ${toggler.ans && "opening"}`}
                   >
-                    {toggler.ans ? (
-                      <AiFillCloseCircle size={25} color="rgb(216, 150, 26)" />
-                    ) : (
-                      <AiOutlinePlusCircle
-                        size={25}
-                        color="rgb(216, 150, 26)"
-                      />
-                    )}
-                  </button>
-                </div>
-                <div
-                  className={`question-form mt-1 ${toggler.ans && "opening"}`}
-                >
-                  {toggler.ans && <AddQuestion addThisQuest={addThisQuest} />}
-                </div>
+                    {toggler.ans && <AddQuestion addThisQuest={addThisQuest} />}
+                  </div>
+                )}
                 <ol className="ans-list">
                   {questions.map((each) => (
                     <AnsList key={v4()} questionDetails={each} />
@@ -188,4 +190,4 @@ const CategoryList = (props) => {
   );
 };
 
-export default CategoryList;
+export default withRouter(CategoryList);

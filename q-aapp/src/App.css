@@ -4,7 +4,7 @@
   outline: none;
 }
 :root {
-  --main-color: rgb(216, 150, 26);
+  --main-color: #125398;
 }
 .main-container {
   background-color: rgb(202, 199, 199);

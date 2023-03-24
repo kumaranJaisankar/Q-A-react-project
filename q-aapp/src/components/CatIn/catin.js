@@ -14,8 +14,8 @@ class CatIn extends Component {
     const { measureIn, activeId } = this.state;
     const { jsonDatas } = this.props;
     return (
-      <div className="main-container">
-        <div className="container-fluid bg-white rounded-lg shadow-lg">
+      <div className="main-containe">
+        <div className="container-fluid ">
           <h1 className="faq-heading text-center">Q&As</h1>
           <pre className="text-right">
             MEASURE TYPE :

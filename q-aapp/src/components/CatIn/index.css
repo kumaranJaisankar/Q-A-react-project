@@ -1,8 +1,15 @@
 .faq-heading {
+  font-weight: bolder;
   font-size: 24px;
   padding: 0;
 }
 .container-fluid {
   min-height: 100vh;
   padding: 1rem !important;
+
+  background-color: #559bf780;
+  background-image: radial-gradient(at 47% 33%, #91c0ff80 0, transparent 59%),
+    radial-gradient(at 82% 65%, hsl(198, 84%, 64%) 0, transparent 55%);
 }
+
+/* Background styles */

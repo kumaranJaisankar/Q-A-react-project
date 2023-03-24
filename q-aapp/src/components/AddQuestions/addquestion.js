@@ -1,6 +1,7 @@
 import "./index.css";
 import { useState } from "react";
 import { v4 } from "uuid";
+import { Button } from "primereact/button";
 const questionDetailsAdd = {
   questionTypeList: [
     "TEXT",
@@ -11,7 +12,7 @@ const questionDetailsAdd = {
     "NUMBER",
   ],
   isRequired: null,
-  questionType: "MULTICHECK",
+  questionType: "TEXT",
   defaultAnswer: null,
   answer: {
     textAnswer: null,
@@ -120,13 +121,16 @@ const AddQuestion = (props) => {
             })}
           </select>
         </pre>
-        <div className="col-md-5 col-lg-4">
-          <label>Question</label>
-          <input type="text" />
+        <div className="col-12">
+          <Button
+            tooltip="add question"
+            tooltipOptions={{ position: "bottom" }}
+            type="submit"
+            className="text-white add-button btn btn-warning"
+          >
+            Add Question
+          </Button>
         </div>
-        <button type="submit" className="text-white add-button btn btn-warning">
-          Add Question
-        </button>
       </form>
     </div>
   );

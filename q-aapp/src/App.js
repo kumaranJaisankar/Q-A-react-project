@@ -668,7 +668,11 @@ const App = () => (
           path="/default"
           component={() => <CatIn jsonDatas={jsonDatas} />}
         />
-        <Route exact path="/clintside" component={() => <h1>clint Side</h1>} />
+        <Route
+          exact
+          path="/clintside"
+          component={() => <CatIn jsonDatas={jsonDatas} />}
+        />
         <Redirect replace to="/default" />
       </Switch>
     </BrowserRouter>

@@ -81,13 +81,20 @@
 // };
 // export default AnsList;
 
-import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
+import { RiArrowRightDownFill, RiArrowRightUpFill } from "react-icons/ri";
 import { v4 } from "uuid";
 import { useState } from "react";
+import { Tooltip } from "primereact/tooltip";
+import { Button } from "primereact/button";
+
+//core
+
+//icons
+
 import "./index.css";
 const AnsList = (props) => {
   const { questionDetails } = props;
-  const { questionText, questionType, answer, choices, questionTypeList } =
+  const { questionText, questionType, choices, questionTypeList } =
     questionDetails;
   const [show, setAct] = useState({
     showAns: false,
@@ -104,10 +111,10 @@ const AnsList = (props) => {
     switch (type) {
       case "TEXT":
         return <input type="text" placeholder="Enter Your Ans.." />;
-        break;
+
       case "INTEGER":
         return <input type="number" className="wid" placeholder="" />;
-        break;
+
       case "MULTICHECK":
         const cho = choices.map((each) => {
           return (
@@ -119,46 +126,54 @@ const AnsList = (props) => {
         });
 
         return cho;
-        break;
+
       default:
         return "";
-        break;
     }
   };
   return (
-    <li>
-      {questionText} ?{" "}
-      <button className="ans-btn" type="button" onClick={showAnsBtn}>
-        {show.showAns ? (
-          <BsThreeDotsVertical color="orange" />
-        ) : (
-          <BsThreeDots color="orange" />
-        )}
-      </button>
-      {show.showAns && (
-        <div className="ans-box rounded-lg p-4">
-          <pre>
-            Question Type :{" "}
-            <select
-              value={questionType}
-              onChange={(event) => console.log(event.target.value)}
-            >
-              {questionTypeList.map((each) => (
-                <option key={v4()} value={each}>
-                  {each}
-                </option>
-              ))}
-            </select>
-          </pre>
-          <h6>
-            <span className="ans">Q.</span>
-            {questionText} ?
-          </h6>
+    <>
+      <Tooltip target=".ans-btn" />
+      <li className="qus-list">
+        {questionText} ?
+        <button
+          data-pr-tooltip="open question"
+          data-pr-disabled={show.showAns}
+          className="ans-btn"
+          type="button"
+          onClick={showAnsBtn}
+        >
+          {show.showAns ? (
+            <RiArrowRightUpFill color="#125398" size={20} />
+          ) : (
+            <RiArrowRightDownFill color="#125398" size={20} />
+          )}
+        </button>
+        {show.showAns && (
+          <div className="ans-box rounded-lg p-4">
+            <pre>
+              Question Type :{" "}
+              <select
+                value={questionType}
+                onChange={(event) => console.log(event.target.value)}
+              >
+                {questionTypeList.map((each) => (
+                  <option key={v4()} value={each}>
+                    {each}
+                  </option>
+                ))}
+              </select>
+            </pre>
+            <h6>
+              <span className="ans">Q.</span>
+              {questionText} ?
+            </h6>
 
-          {typeOfQus(questionType, choices)}
-        </div>
-      )}
-    </li>
+            {typeOfQus(questionType, choices)}
+          </div>
+        )}
+      </li>
+    </>
   );
 };
 export default AnsList;

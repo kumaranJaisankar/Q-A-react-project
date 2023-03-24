@@ -1,5 +1,5 @@
 .question-form {
-  border: 1px solid rgb(222, 137, 72);
+  border: 1px solid var(--main-color);
   border-radius: 20px;
   opacity: 0;
   height: 0;
@@ -14,13 +14,13 @@
 @media all and (max-width: 900px) {
   .opening {
     opacity: 1;
-    height: 180px;
+    min-height: 130px;
   }
 }
 .question-input {
   border: none;
   background: transparent;
-  border-bottom: 2px solid orange;
+  border-bottom: 2px solid var(--main-color);
 }
 .question-input::after {
   content: "?";

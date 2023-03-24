@@ -8,7 +8,7 @@
 }
 
 .ans-box {
-  border: 1px solid #dc991f;
+  border: 1px solid var(--main-color);
 }
 .d-inline {
   text-decoration: underline;
