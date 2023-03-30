@@ -121,12 +121,13 @@ const AddQuestion = (props) => {
             })}
           </select>
         </pre>
-        <div className="col-12">
+        <div className="col-6">
           <Button
             tooltip="add question"
             tooltipOptions={{ position: "bottom" }}
             type="submit"
-            className="text-white add-button btn btn-warning"
+            className="text-white add-button btn btn-warning h-50"
+            style={{ fontSize: "10px" }}
           >
             Add Question
           </Button>

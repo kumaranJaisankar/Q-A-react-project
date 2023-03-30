@@ -1,91 +1,5 @@
-// import { BsThreeDots, BsThreeDotsVertical } from "react-icons/bs";
-// import { stringify, v4 } from "uuid";
-// import { useState, useEffect } from "react";
-// import "./index.css";
-// const AnsList = (props) => {
-//   const { questionDetails } = props;
-//   const [show, setAct] = useState({
-//     questType: "TEXT",
-//   });
-
-//   const filtering = questionDetails.filter(
-//     (each) => each.questionType === show.questType
-//   );
-//   let choicess = [];
-//   if (show.questType === "MULTICHECK") {
-//     for (let item of filtering[0].answer.selectedChoices) {
-//       choicess.push(item.name);
-//     }
-//   }
-//   console.log(choicess);
-//   const changeType = (event) => {
-//     setAct({ questType: event.target.value });
-//   };
-//   console.log(filtering);
-//   const getAnswers = (type) => {
-//     switch (type) {
-//       case "TEXT":
-//         return filtering[0].answer.textAnswer;
-//         break;
-//       case "INTEGER":
-//         return filtering[0].answer.intAnswer;
-//         break;
-//       case "MULTICHECK":
-//         // const choic = filtering[0].answer.selectedChoices.map(
-//         //   (each) => each.displayValue
-//         // );
-//         return choicess.join(",");
-//         break;
-//       default:
-//         return "";
-//         break;
-//     }
-//   };
-
-//   return (
-//     <div className="ans-box rounded-lg p-4 mt-3">
-//       <pre>
-//         Question Type :{" "}
-//         <select value={show.questType} onChange={changeType}>
-//           {questionDetails[0].questionTypeList.map((each) => (
-//             <option key={v4()} value={each}>
-//               {each}
-//             </option>
-//           ))}
-//         </select>
-//       </pre>
-//       <h6>
-//         <span className="ans">Q.</span>
-//         {filtering[0].questionText} ?
-//       </h6>
-//       <span className="ans">Ans :</span>
-//       <h6
-//         suppressContentEditableWarning={true}
-//         className="d-inline"
-//         contentEditable
-//       >
-//         {getAnswers(show.questType)}
-//       </h6>
-//       {show.questType === "MULTICHECK" && (
-//         <ul className="check-list">
-//           {filtering[0].choices.map((each) => (
-//             <li key={v4()}>
-//               <input type="checkbox" value={each.name} checked />{" "}
-//               {each.displayValue}
-//             </li>
-//           ))}
-//         </ul>
-//       )}
-//     </div>
-//   );
-// };
-// export default AnsList;
-
-import { RiArrowRightDownFill, RiArrowRightUpFill } from "react-icons/ri";
 import { v4 } from "uuid";
-import { useState } from "react";
-import { Tooltip } from "primereact/tooltip";
-import { Button } from "primereact/button";
+import { useState, useId } from "react";
 
 //core
 
@@ -96,6 +10,7 @@ const AnsList = (props) => {
   const { questionDetails } = props;
   const { questionText, questionType, choices, questionTypeList } =
     questionDetails;
+  const uniqId = useId();
   const [show, setAct] = useState({
     showAns: false,
     choiceVal: "",
@@ -133,43 +48,53 @@ const AnsList = (props) => {
   };
   return (
     <>
-      <Tooltip target=".ans-btn" />
-      <li className="qus-list">
-        {questionText} ?
-        <button
-          data-pr-tooltip="open question"
-          data-pr-disabled={show.showAns}
-          className="ans-btn"
-          type="button"
-          onClick={showAnsBtn}
-        >
-          {show.showAns ? (
-            <RiArrowRightUpFill color="#125398" size={20} />
-          ) : (
-            <RiArrowRightDownFill color="#125398" size={20} />
-          )}
-        </button>
-        {show.showAns && (
-          <div className="ans-box rounded-lg p-4">
-            <pre>
-              Question Type :{" "}
-              <select
-                value={questionType}
-                onChange={(event) => console.log(event.target.value)}
-              >
-                {questionTypeList.map((each) => (
-                  <option key={v4()} value={each}>
-                    {each}
-                  </option>
-                ))}
-              </select>
-            </pre>
-            <h6>
-              <span className="ans">Q.</span>
-              {questionText} ?
-            </h6>
+      <li className="qus-list mt-1">
+        {!show.showAns && (
+          <>
+            <label htmlFor={uniqId}>{questionText} ?</label>
+            <button
+              id={uniqId}
+              className="ans-btn"
+              type="button"
+              onClick={showAnsBtn}
+            >
+              <i
+                class="fa-solid fa-chevron-down fa-beat-fade"
+                style={{ fontSize: "10px", color: "red" }}
+              ></i>
+            </button>
+          </>
+        )}
 
-            {typeOfQus(questionType, choices)}
+        {show.showAns && (
+          <div className="ans-box rounded-lg ">
+            <button type="button" className="pos" onClick={showAnsBtn}>
+              <i
+                className="fa-solid fa-x "
+                style={{ fontSize: "15px", color: "white" }}
+              ></i>
+            </button>
+            <div className="ml-4 mb-4">
+              <pre>
+                Question Type :{" "}
+                <select
+                  value={questionType}
+                  onChange={(event) => console.log(event.target.value)}
+                >
+                  {questionTypeList.map((each) => (
+                    <option key={v4()} value={each}>
+                      {each}
+                    </option>
+                  ))}
+                </select>
+              </pre>
+              <h6>
+                <span className="ans">Q.</span>
+                {questionText} ?
+              </h6>
+
+              {typeOfQus(questionType, choices)}
+            </div>
           </div>
         )}
       </li>

@@ -14,7 +14,7 @@
 @media all and (max-width: 900px) {
   .opening {
     opacity: 1;
-    min-height: 130px;
+    min-height: 140px;
   }
 }
 .question-input {

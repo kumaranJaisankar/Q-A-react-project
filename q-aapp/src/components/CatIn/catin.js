@@ -1,22 +1,40 @@
 import { Component } from "react";
+import { withRouter } from "react-router-dom";
+
 import { v4 as uuidv4 } from "uuid";
 import CategoryList from "../categoryList/category";
 import "./index.css";
 
 class CatIn extends Component {
-  state = { measureIn: "number", activeId: null, isActive: false };
+  state = {
+    measureIn: "number",
+    activeId: null,
+    isActive: false,
+    routView: "/clintside",
+  };
+  componentDidMount() {
+    const { history } = this.props;
+    const which =
+      history.location.pathname === "/default" ? "/clintside" : "/default";
+    this.setState({ routView: which });
+  }
   currentValue = (event) => {
     this.setState({ measureIn: event.target.value });
   };
   isClicking = (id) =>
     this.setState((prev) => ({ activeId: id, isActive: !prev.isActive }));
   render() {
-    const { measureIn, activeId } = this.state;
+    const { measureIn, activeId, routView } = this.state;
     const { jsonDatas } = this.props;
+    const namePre = routView === "/clintside" ? "clint view" : "default view";
     return (
       <div className="main-containe">
         <div className="container-fluid ">
           <h1 className="faq-heading text-center">Q&As</h1>
+          <a href={routView} className="preview">
+            {namePre} <i class="fa-solid fa-up-right-from-square"></i>
+          </a>
+
           <pre className="text-right">
             MEASURE TYPE :
             <select
@@ -53,4 +71,4 @@ class CatIn extends Component {
   }
 }
 
-export default CatIn;
+export default withRouter(CatIn);
