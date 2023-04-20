@@ -63,3 +63,9 @@ select {
 .p-button {
   background: var(--main-color) !important;
 }
+.add-cate {
+  background-color: var(--main-color);
+  color: white;
+  padding: 5px;
+  font-size: 12px;
+}

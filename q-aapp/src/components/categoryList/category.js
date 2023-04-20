@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { withRouter } from "react-router-dom";
 import { v4 } from "uuid";
+
 import {
   AiFillCloseCircle,
-  AiFillMinusCircle,
   AiOutlineDown,
   AiOutlineMinus,
   AiOutlinePlusCircle,
 } from "react-icons/ai";
+import { BsChevronDoubleDown } from "react-icons/bs";
+import { RiCloseCircleLine } from "react-icons/ri";
 import "./index.css";
 import AnsList from "../AnsList/ansList";
 import CategoryCont from "../categoryContainer/container";
@@ -29,8 +31,17 @@ const CategoryList = (props) => {
     currentActive: false,
   });
   const { categoryDetail } = props;
-  console.log(categoryDetail);
-  const { first, name, questions, subCategories } = categoryDetail;
+  const {
+    id,
+    first,
+    name,
+    questions,
+    subCategories,
+    hasQuestions,
+    hasSubCategories,
+    level,
+    weightage,
+  } = categoryDetail;
 
   const clickingBtn = () => {
     console.log(questions);
@@ -57,11 +68,27 @@ const CategoryList = (props) => {
   };
 
   const addThisQuest = (quest) => {
-    console.log(quest);
-    questions.push(quest);
     clickTogle({ ...toggler, ans: !toggler.ans });
   };
 
+  const addSubCategory = () => {
+    console.log("add");
+  };
+
+  const storage = JSON.parse(localStorage.getItem("addQuest"));
+  const seprateQuestion = (store, pk) => {
+    let questArray = [];
+    if (questions !== null) {
+      questArray = [...questions];
+      for (let k of store) {
+        if (k.currentId === pk) {
+          questArray.push(k);
+        }
+      }
+    }
+    console.log(questArray, "na dha da");
+    return questArray;
+  };
   return (
     <li className="outer mb-2  p-3">
       <div
@@ -70,6 +97,7 @@ const CategoryList = (props) => {
       >
         <h3 className="head-size">{first}</h3>
         <Tooltip target=".close-open" mouseTrackLeft={10} />
+        <small>{level}</small>
         <button
           data-pr-tooltip={!toggler.currentActive ? "open" : "close"}
           className="close-open mr-5"
@@ -85,29 +113,34 @@ const CategoryList = (props) => {
       {toggler.currentActive && (
         <div>
           <hr />
-          <div className="pre-class d-flex flex-row justify-content-between flex-wrap align-items-start">
+          <div className="pre-class d-flex flex-row justify-content-start flex-wrap align-items-start">
             <p className="c-name">
               <span className="pre-class"> Name :</span>{" "}
-              <input type="text" className="w-75" value={name} />
+              <input
+                type="text"
+                value={name}
+                style={{ width: `${name.length * 8}px` }}
+              />
             </p>
 
-            <p className="c-name">
-              {" "}
-              <span className="pre-class"> Int Score :</span>{" "}
-              <input type="number" className="w-25" placeholder="0" />
-              {/* {intScore === null ? "N/a" : intScore} */}
+            <p className="c-name ml-5">
+              <span className="pre-class"> weightage :</span>{" "}
+              <input
+                type="number"
+                value={weightage}
+                style={{ width: `${(weightage + "").length * 20}px` }}
+              />
             </p>
-            <p className="c-name lighter">
-              {" "}
+            {/* <p className="c-name lighter">
+              
               <span className="pre-class"> Percent :</span>{" "}
               <input type="number" className="w-25" placeholder="0" /> %
-              {/* {intScore === null ? "N/a" : intScore} */}
-            </p>
+            </p> */}
           </div>
           {/* quetion session */}
           <hr />
           <div>
-            {questions !== null && (
+            {hasQuestions && (
               <>
                 <div className="arround">
                   <h6 className="pre-class font-weight-bold">Questions</h6>
@@ -133,43 +166,60 @@ const CategoryList = (props) => {
                     </>
                   )}
                 </div>
+                {/* adding question template */}
                 {isCurrent && (
                   <div
                     className={`question-form mt-1 ${toggler.ans && "opening"}`}
                   >
-                    {toggler.ans && <AddQuestion addThisQuest={addThisQuest} />}
+                    {toggler.ans && (
+                      <AddQuestion addThisQuest={addThisQuest} currentId={id} />
+                    )}
                   </div>
                 )}
                 <ol className="ans-list">
-                  {questions.map((each) => (
-                    <AnsList key={v4()} questionDetails={each} />
-                  ))}
+                  {(storage === null
+                    ? questions
+                    : seprateQuestion(storage, id)
+                  ).map((each) =>
+                    each === null ? (
+                      ""
+                    ) : (
+                      <AnsList key={v4()} questionDetails={each} />
+                    )
+                  )}
                 </ol>
 
-                <h6 className="mt-3 pre-class unactive font-weight-bold">
+                {/* <h6 className={`mt-3 pre-class ${unactive} font-weight-bold`}>
                   Sub Categories
-                </h6>
+                </h6> */}
               </>
             )}
-            {subCategories !== null && (
+            {hasSubCategories && (
               <>
-                <h6 className="mb-4 pre-class unactive font-weight-bold">
+                {/* <h6 className="mb-4 pre-class unactive font-weight-bold">
                   Questions
-                </h6>
+                </h6> */}
                 <div className="arround">
                   <h6 className="pre-class font-weight-bold">Sub Categories</h6>
-
+                  <button
+                    type="button"
+                    className="add-cate rounded-pill"
+                    onClick={addSubCategory}
+                  >
+                    Add
+                  </button>
                   <button
                     className="close-open mr-5"
                     type="button"
                     onClick={expandSubCatBtn}
                   >
                     {toggler.subCat ? (
-                      <AiFillMinusCircle size={25} color="rgb(216, 150, 26)" />
+                      <RiCloseCircleLine size={30} color="#125398" />
                     ) : (
-                      <AiOutlinePlusCircle
+                      <BsChevronDoubleDown
                         size={25}
-                        color="rgb(216, 150, 26)"
+                        color="#125398"
+                        className="fa-bounce"
                       />
                     )}
                   </button>

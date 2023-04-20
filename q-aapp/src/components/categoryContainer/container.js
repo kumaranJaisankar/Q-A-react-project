@@ -1,38 +1,54 @@
 import { v4 } from "uuid";
-import { AiFillMinusCircle, AiOutlinePlusCircle } from "react-icons/ai";
+
 import "./index.css";
 import AnsList from "../AnsList/ansList";
 import "./index.css";
+import CategoryList from "../categoryList/category";
 
 const CategoryCont = (props) => {
   const { categoryDetail } = props;
-  const { name, questions, subCategories } = categoryDetail;
+  const {
+    name,
+    questions,
+    subCategories,
+    hasQuestions,
+    hasSubCategories,
+    weightage,
+  } = categoryDetail;
   return (
-    <div>
+    <div className="border-style mt-2">
       <hr />
-      <div className="pre-class d-flex flex-row justify-content-between flex-wrap align-items-start">
+      <div className="pre-class d-flex flex-row justify-content-start flex-wrap align-items-start">
         <p className="c-name">
           <span className="pre-class"> Name :</span>{" "}
-          <input type="text" className="w-75" value={name} />
+          <input
+            type="text"
+            style={{ width: `${(name.length + 1) * 8}px` }}
+            value={name}
+          />
         </p>
 
-        <p className="c-name">
-          {" "}
-          <span className="pre-class"> Int Score :</span>{" "}
+        <p className="c-name ml-5">
+          <span className="pre-class"> weightage :</span>
+          <input
+            type="number"
+            value={weightage}
+            style={{ width: `${(weightage + "").length * 20}px` }}
+          />
+        </p>
+        {/* <p className="c-name">
+          <span className="pre-class"> Int Score :</span>
           <input type="number" className="w-25" placeholder="0" />
-          {/* {intScore === null ? "N/a" : intScore} */}
         </p>
         <p className="c-name lighter">
-          {" "}
-          <span className="pre-class"> Percent :</span>{" "}
+          <span className="pre-class"> Percent :</span>
           <input type="number" className="w-25" placeholder="0" /> %
-          {/* {intScore === null ? "N/a" : intScore} */}
-        </p>
+        </p> */}
       </div>
       {/* quetion session */}
       <hr />
       <div>
-        {questions !== null && (
+        {hasQuestions && (
           <>
             <div className="arround">
               <h6 className="pre-class font-weight-bold">Questions</h6>
@@ -48,16 +64,16 @@ const CategoryCont = (props) => {
               ))}
             </ol>
 
-            <h6 className="mt-3 pre-class unactive font-weight-bold">
+            {/* <h6 className="mt-3 pre-class unactive font-weight-bold">
               Sub Categories
-            </h6>
+            </h6> */}
           </>
         )}
-        {subCategories !== null && (
+        {hasSubCategories && (
           <>
-            <h6 className="mb-4 pre-class unactive font-weight-bold">
+            {/* <h6 className="mb-4 pre-class unactive font-weight-bold">
               Questions
-            </h6>
+            </h6> */}
             <div className="arround">
               <h6 className="pre-class font-weight-bold">Sub Categories</h6>
 
@@ -68,7 +84,8 @@ const CategoryCont = (props) => {
 
             <ul className="ans-list">
               {subCategories.map((each) => (
-                <li key={v4()}>{each.name}</li>
+                <CategoryList key={v4()} categoryDetail={each} />
+                // <li key={v4()}>{each.name}</li>
               ))}
             </ul>
           </>
