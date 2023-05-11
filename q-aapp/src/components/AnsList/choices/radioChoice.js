@@ -1,9 +1,13 @@
 import React, { useState, useId } from "react";
+import { useLocation } from "react-router-dom";
 import "../index.css";
 const getValue = JSON.parse(sessionStorage.getItem("storeText"));
 const RadioChoice = (props) => {
   const { choiceDetail } = props;
   const { name } = choiceDetail;
+  // default path page
+  const { pathname } = useLocation();
+  const isDefaultPage = pathname === "/default";
   const uniqId = useId();
   const [isEditable, setEdit] = useState(false);
   const [textEdit, setText] = useState(name);
@@ -28,25 +32,27 @@ const RadioChoice = (props) => {
         />
       )}
       {!isEditable && <label htmlFor={`${name}-${uniqId}`}>{textEdit}</label>}
-      <button
-        title="edit"
-        type="button"
-        className="tooltips"
-        onClick={() => setEdit(!isEditable)}
-      >
-        {isEditable && (
-          <i
-            class="fa-solid fa-check "
-            style={{ color: "#25710a", fontSize: "15px" }}
-          ></i>
-        )}
-        {!isEditable && (
-          <i
-            className="fa-solid fa-pen"
-            style={{ color: "#25710a", fontSize: "13px" }}
-          ></i>
-        )}
-      </button>
+      {isDefaultPage && (
+        <button
+          title="edit"
+          type="button"
+          className="tooltips"
+          onClick={() => setEdit(!isEditable)}
+        >
+          {isEditable && (
+            <i
+              class="fa-solid fa-check "
+              style={{ color: "#25710a", fontSize: "15px" }}
+            ></i>
+          )}
+          {!isEditable && (
+            <i
+              className="fa-solid fa-pen"
+              style={{ color: "#25710a", fontSize: "13px" }}
+            ></i>
+          )}
+        </button>
+      )}
     </li>
   );
 };

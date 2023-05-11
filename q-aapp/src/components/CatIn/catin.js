@@ -1,282 +1,612 @@
 import { Component } from "react";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Suspense, createContext, memo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import CategoryList from "../categoryList/category";
 import "./index.css";
 import CatPopup from "./CatPopup";
-const sampleCategories = {
-  name: "Base Line, Questions and SubCategories",
-  first: "category -4",
-  hasQuestions: true,
-  hasSubCategories: true,
-  intScore: null,
-  percentScore: null,
-  level: "Level 1",
-  weightage: 40,
-  questions: [
-    {
+// const sampleCategories = {
+//   name: "Base Line, Questions and SubCategories",
+//   id: uuidv4(),
+//   first: "category -4",
+//   hasQuestions: true,
+//   hasSubCategories: true,
+//   intScore: null,
+//   percentScore: null,
+//   level: "Level 1",
+//   weightage: 40,
+//   questions: [
+//     {
+//       id: uuidv4(),
+//       questionTypeList: [
+//         "TEXT",
+//         "DROPDOWN",
+//         "RADIO",
+//         "MULTICHECK",
+//         "INTEGER",
+//         "NUMBER",
+//       ],
+//       isRequired: null,
+//       questionType: "TEXT",
+//       defaultAnswer: null,
+//       answer: {
+//         textAnswer: "Rohit Kumar",
+//         intAnswer: null,
+//         floatAnswer: null,
+//         selectedChoices: null,
+//         evalScore: null,
+//       },
+//       choices: null,
+//       questionText: "What is your name",
+//     },
+//     {
+//       id: uuidv4(),
+//       questionTypeList: [
+//         "TEXT",
+//         "DROPDOWN",
+//         "RADIO",
+//         "MULTICHECK",
+//         "INTEGER",
+//         "NUMBER",
+//       ],
+//       isRequired: null,
+//       questionType: "INTEGER",
+//       defaultAnswer: null,
+//       answer: {
+//         textAnswer: null,
+//         intAnswer: 32,
+//         floatAnswer: null,
+//         selectedChoices: null,
+//         evalScore: null,
+//       },
+//       choices: null,
+//       questionText: "What is your age",
+//     },
+//     {
+//       id: uuidv4(),
+//       questionTypeList: [
+//         "TEXT",
+//         "DROPDOWN",
+//         "RADIO",
+//         "MULTICHECK",
+//         "INTEGER",
+//         "NUMBER",
+//       ],
+//       isRequired: null,
+//       questionType: "MULTICHECK",
+//       defaultAnswer: null,
+//       answer: {
+//         textAnswer: null,
+//         intAnswer: null,
+//         floatAnswer: null,
+//         selectedChoices: [
+//           {
+//             id: uuidv4(),
+//             choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//             name: "Mathematics",
+//             displayValue: "Mathematics",
+//             choiceType: "CHECK",
+//             score: 10.0,
+//           },
+//           {
+//             id: uuidv4(),
+//             choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//             name: "Science",
+//             displayValue: "Science",
+//             choiceType: "CHECK",
+//             score: 10.0,
+//           },
+//           {
+//             id: uuidv4(),
+//             choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//             name: "History",
+//             displayValue: "History",
+//             choiceType: "CHECK",
+//             score: 10.0,
+//           },
+//         ],
+//         evalScore: null,
+//       },
+//       choices: [
+//         {
+//           id: uuidv4(),
+//           choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//           name: "Mathematics",
+//           displayValue: "Mathematics",
+//           choiceType: "CHECK",
+//           score: 10.0,
+//         },
+//         {
+//           id: uuidv4(),
+//           choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//           name: "Science",
+//           displayValue: "Science",
+//           choiceType: "CHECK",
+//           score: 10.0,
+//         },
+//         {
+//           id: uuidv4(),
+//           choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//           name: "History",
+//           displayValue: "History",
+//           choiceType: "CHECK",
+//           score: 10.0,
+//         },
+//       ],
+//       questionText: "Pick your interest Topics",
+//     },
+//   ],
+//   subCategories: [
+//     {
+//       id: uuidv4(),
+//       name: "Sub Category with only Questions",
+//       hasQuestions: true,
+//       hasSubCategories: false,
+//       intScore: null,
+//       percentScore: null,
+//       level: "Level 2",
+//       weightage: 15,
+//       questions: [
+//         {
+//           id: uuidv4(),
+//           questionTypeList: [
+//             "TEXT",
+//             "DROPDOWN",
+//             "RADIO",
+//             "MULTICHECK",
+//             "INTEGER",
+//             "NUMBER",
+//           ],
+//           isRequired: null,
+//           questionType: "TEXT",
+//           defaultAnswer: null,
+//           answer: {
+//             textAnswer: "Rohit Kumar",
+//             intAnswer: null,
+//             floatAnswer: null,
+//             selectedChoices: null,
+//             evalScore: null,
+//           },
+//           choices: null,
+//           questionText: "What is your name",
+//         },
+//         {
+//           id: uuidv4(),
+//           questionTypeList: [
+//             "TEXT",
+//             "DROPDOWN",
+//             "RADIO",
+//             "MULTICHECK",
+//             "INTEGER",
+//             "NUMBER",
+//           ],
+//           isRequired: null,
+//           questionType: "INTEGER",
+//           defaultAnswer: null,
+//           answer: {
+//             textAnswer: null,
+//             intAnswer: 32,
+//             floatAnswer: null,
+//             selectedChoices: null,
+//             evalScore: null,
+//           },
+//           choices: null,
+//           questionText: "What is your age",
+//         },
+//         {
+//           id: uuidv4(),
+//           questionTypeList: [
+//             "TEXT",
+//             "DROPDOWN",
+//             "RADIO",
+//             "MULTICHECK",
+//             "INTEGER",
+//             "NUMBER",
+//           ],
+//           isRequired: null,
+//           questionType: "MULTICHECK",
+//           defaultAnswer: null,
+//           answer: {
+//             textAnswer: null,
+//             intAnswer: null,
+//             floatAnswer: null,
+//             selectedChoices: [
+//               {
+//                 id: uuidv4(),
+//                 choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//                 name: "Mathematics",
+//                 displayValue: "Mathematics",
+//                 choiceType: "CHECK",
+//                 score: 10.0,
+//               },
+//               {
+//                 id: uuidv4(),
+//                 choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//                 name: "Science",
+//                 displayValue: "Science",
+//                 choiceType: "CHECK",
+//                 score: 10.0,
+//               },
+//               {
+//                 id: uuidv4(),
+//                 choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//                 name: "History",
+//                 displayValue: "History",
+//                 choiceType: "CHECK",
+//                 score: 10.0,
+//               },
+//             ],
+//             evalScore: null,
+//           },
+//           choices: [
+//             {
+//               id: uuidv4(),
+//               choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//               name: "Mathematics",
+//               displayValue: "Mathematics",
+//               choiceType: "CHECK",
+//               score: 10.0,
+//             },
+//             {
+//               id: uuidv4(),
+//               choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//               name: "Science",
+//               displayValue: "Science",
+//               choiceType: "CHECK",
+//               score: 10.0,
+//             },
+//             {
+//               id: uuidv4(),
+//               choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//               name: "History",
+//               displayValue: "History",
+//               choiceType: "CHECK",
+//               score: 10.0,
+//             },
+//           ],
+//           questionText: "Pick your interest Topics",
+//         },
+//       ],
+//       subCategories: null,
+//     },
+//     {
+//       id: uuidv4(),
+//       name: "Sub Category with Questions and Sub-Category",
+//       hasQuestions: true,
+//       hasSubCategories: true,
+//       intScore: null,
+//       percentScore: null,
+//       level: "Level 2",
+//       weightage: 20,
+//       questions: [
+//         {
+//           id: uuidv4(),
+//           questionTypeList: [
+//             "TEXT",
+//             "DROPDOWN",
+//             "RADIO",
+//             "MULTICHECK",
+//             "INTEGER",
+//             "NUMBER",
+//           ],
+//           isRequired: null,
+//           questionType: "TEXT",
+//           defaultAnswer: null,
+//           answer: {
+//             textAnswer: "Rohit Kumar",
+//             intAnswer: null,
+//             floatAnswer: null,
+//             selectedChoices: null,
+//             evalScore: null,
+//           },
+//           choices: null,
+//           questionText: "What is your name",
+//         },
+//         {
+//           id: uuidv4(),
+//           questionTypeList: [
+//             "TEXT",
+//             "DROPDOWN",
+//             "RADIO",
+//             "MULTICHECK",
+//             "INTEGER",
+//             "NUMBER",
+//           ],
+//           isRequired: null,
+//           questionType: "INTEGER",
+//           defaultAnswer: null,
+//           answer: {
+//             textAnswer: null,
+//             intAnswer: 32,
+//             floatAnswer: null,
+//             selectedChoices: null,
+//             evalScore: null,
+//           },
+//           choices: null,
+//           questionText: "What is your age",
+//         },
+//         {
+//           id: uuidv4(),
+//           questionTypeList: [
+//             "TEXT",
+//             "DROPDOWN",
+//             "RADIO",
+//             "MULTICHECK",
+//             "INTEGER",
+//             "NUMBER",
+//           ],
+//           isRequired: null,
+//           questionType: "MULTICHECK",
+//           defaultAnswer: null,
+//           answer: {
+//             textAnswer: null,
+//             intAnswer: null,
+//             floatAnswer: null,
+//             selectedChoices: [
+//               {
+//                 id: uuidv4(),
+//                 choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//                 name: "Mathematics",
+//                 displayValue: "Mathematics",
+//                 choiceType: "CHECK",
+//                 score: 10.0,
+//               },
+//               {
+//                 id: uuidv4(),
+//                 choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//                 name: "Science",
+//                 displayValue: "Science",
+//                 choiceType: "CHECK",
+//                 score: 10.0,
+//               },
+//               {
+//                 id: uuidv4(),
+//                 choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//                 name: "History",
+//                 displayValue: "History",
+//                 choiceType: "CHECK",
+//                 score: 10.0,
+//               },
+//             ],
+//             evalScore: null,
+//           },
+//           choices: [
+//             {
+//               id: uuidv4(),
+//               choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//               name: "Mathematics",
+//               displayValue: "Mathematics",
+//               choiceType: "CHECK",
+//               score: 10.0,
+//             },
+//             {
+//               id: uuidv4(),
+//               choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//               name: "Science",
+//               displayValue: "Science",
+//               choiceType: "CHECK",
+//               score: 10.0,
+//             },
+//             {
+//               id: uuidv4(),
+//               choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
+//               name: "History",
+//               displayValue: "History",
+//               choiceType: "CHECK",
+//               score: 10.0,
+//             },
+//           ],
+//           questionText: "Pick your interest Topics",
+//         },
+//       ],
+//       subCategories: [
+//         {
+//           id: uuidv4(),
+//           name: "Super Sub Category with only Questions",
+//           hasQuestions: true,
+//           hasSubCategories: false,
+//           intScore: null,
+//           percentScore: null,
+//           level: "Level 3",
+//           weightage: 15,
+//           questions: [
+//             {
+//               id: uuidv4(),
+//               questionTypeList: [
+//                 "TEXT",
+//                 "DROPDOWN",
+//                 "RADIO",
+//                 "MULTICHECK",
+//                 "INTEGER",
+//                 "NUMBER",
+//               ],
+//               isRequired: null,
+//               questionType: "TEXT",
+//               defaultAnswer: null,
+//               answer: {
+//                 textAnswer: "Rohit Kumar",
+//                 intAnswer: null,
+//                 floatAnswer: null,
+//                 selectedChoices: null,
+//                 evalScore: null,
+//               },
+//               choices: null,
+//               questionText: "What is your name",
+//             },
+//             {
+//               id: uuidv4(),
+//               questionTypeList: [
+//                 "TEXT",
+//                 "DROPDOWN",
+//                 "RADIO",
+//                 "MULTICHECK",
+//                 "INTEGER",
+//                 "NUMBER",
+//               ],
+//               isRequired: null,
+//               questionType: "INTEGER",
+//               defaultAnswer: null,
+//               answer: {
+//                 textAnswer: null,
+//                 intAnswer: 32,
+//                 floatAnswer: null,
+//                 selectedChoices: null,
+//                 evalScore: null,
+//               },
+//               choices: null,
+//               questionText: "What is your age",
+//             },
+//             {
+//               id: uuidv4(),
+//               questionTypeList: [
+//                 "TEXT",
+//                 "DROPDOWN",
+//                 "RADIO",
+//                 "MULTICHECK",
+//                 "INTEGER",
+//                 "NUMBER",
+//               ],
+//               isRequired: null,
+//               questionType: "MULTICHECK",
+//               defaultAnswer: null,
+//               answer: {
+//                 textAnswer: null,
+//                 intAnswer: null,
+//                 floatAnswer: null,
+//                 selectedChoices: [
+//                   {
+//                     id: uuidv4(),
+//                     choiceTypeList: [
+//                       "TEXT",
+//                       "RADIO",
+//                       "CHECK",
+//                       "INTEGER",
+//                       "NUMBER",
+//                     ],
+//                     name: "Mathematics",
+//                     displayValue: "Mathematics",
+//                     choiceType: "CHECK",
+//                     score: 10.0,
+//                   },
+//                   {
+//                     id: uuidv4(),
+//                     choiceTypeList: [
+//                       "TEXT",
+//                       "RADIO",
+//                       "CHECK",
+//                       "INTEGER",
+//                       "NUMBER",
+//                     ],
+//                     name: "Science",
+//                     displayValue: "Science",
+//                     choiceType: "CHECK",
+//                     score: 10.0,
+//                   },
+//                   {
+//                     id: uuidv4(),
+//                     choiceTypeList: [
+//                       "TEXT",
+//                       "RADIO",
+//                       "CHECK",
+//                       "INTEGER",
+//                       "NUMBER",
+//                     ],
+//                     name: "History",
+//                     displayValue: "History",
+//                     choiceType: "CHECK",
+//                     score: 10.0,
+//                   },
+//                 ],
+//                 evalScore: null,
+//               },
+//               choices: [
+//                 {
+//                   id: uuidv4(),
+//                   choiceTypeList: [
+//                     "TEXT",
+//                     "RADIO",
+//                     "CHECK",
+//                     "INTEGER",
+//                     "NUMBER",
+//                   ],
+//                   name: "Mathematics",
+//                   displayValue: "Mathematics",
+//                   choiceType: "CHECK",
+//                   score: 10.0,
+//                 },
+//                 {
+//                   id: uuidv4(),
+//                   choiceTypeList: [
+//                     "TEXT",
+//                     "RADIO",
+//                     "CHECK",
+//                     "INTEGER",
+//                     "NUMBER",
+//                   ],
+//                   name: "Science",
+//                   displayValue: "Science",
+//                   choiceType: "CHECK",
+//                   score: 10.0,
+//                 },
+//                 {
+//                   id: uuidv4(),
+//                   choiceTypeList: [
+//                     "TEXT",
+//                     "RADIO",
+//                     "CHECK",
+//                     "INTEGER",
+//                     "NUMBER",
+//                   ],
+//                   name: "History",
+//                   displayValue: "History",
+//                   choiceType: "CHECK",
+//                   score: 10.0,
+//                 },
+//               ],
+//               questionText: "Pick your interest Topics",
+//             },
+//           ],
+//           subCategories: null,
+//         },
+//       ],
+//     },
+//   ],
+// };
+export const UserContext = createContext();
+
+class CatIn extends Component {
+  state = {
+    measureIn: "number",
+    activeId: null,
+    isActive: false,
+    routView: "/clintside",
+    theme: false,
+  };
+
+  componentDidMount() {
+    const { history } = this.props;
+    const pathName =
+      history.location.pathname === "/default" ? "/clintside" : "/default";
+    this.setState({ routView: pathName });
+  }
+  currentValue = (event) => {
+    this.setState({ measureIn: event.target.value });
+  };
+  isClicking = (id) =>
+    this.setState((prev) => ({ activeId: id, isActive: !prev.isActive }));
+
+  addCategory = (name, checkedDetails) => {
+    const { setRendering, rendering } = this.props;
+    const sampleCategories = {
+      name: "Base Line, Questions and SubCategories",
       id: uuidv4(),
-      questionTypeList: [
-        "TEXT",
-        "DROPDOWN",
-        "RADIO",
-        "MULTICHECK",
-        "INTEGER",
-        "NUMBER",
-      ],
-      isRequired: null,
-      questionType: "TEXT",
-      defaultAnswer: null,
-      answer: {
-        textAnswer: "Rohit Kumar",
-        intAnswer: null,
-        floatAnswer: null,
-        selectedChoices: null,
-        evalScore: null,
-      },
-      choices: null,
-      questionText: "What is your name",
-    },
-    {
-      id: uuidv4(),
-      questionTypeList: [
-        "TEXT",
-        "DROPDOWN",
-        "RADIO",
-        "MULTICHECK",
-        "INTEGER",
-        "NUMBER",
-      ],
-      isRequired: null,
-      questionType: "INTEGER",
-      defaultAnswer: null,
-      answer: {
-        textAnswer: null,
-        intAnswer: 32,
-        floatAnswer: null,
-        selectedChoices: null,
-        evalScore: null,
-      },
-      choices: null,
-      questionText: "What is your age",
-    },
-    {
-      id: uuidv4(),
-      questionTypeList: [
-        "TEXT",
-        "DROPDOWN",
-        "RADIO",
-        "MULTICHECK",
-        "INTEGER",
-        "NUMBER",
-      ],
-      isRequired: null,
-      questionType: "MULTICHECK",
-      defaultAnswer: null,
-      answer: {
-        textAnswer: null,
-        intAnswer: null,
-        floatAnswer: null,
-        selectedChoices: [
-          {
-            id: uuidv4(),
-            choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-            name: "Mathematics",
-            displayValue: "Mathematics",
-            choiceType: "CHECK",
-            score: 10.0,
-          },
-          {
-            id: uuidv4(),
-            choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-            name: "Science",
-            displayValue: "Science",
-            choiceType: "CHECK",
-            score: 10.0,
-          },
-          {
-            id: uuidv4(),
-            choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-            name: "History",
-            displayValue: "History",
-            choiceType: "CHECK",
-            score: 10.0,
-          },
-        ],
-        evalScore: null,
-      },
-      choices: [
-        {
-          id: uuidv4(),
-          choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-          name: "Mathematics",
-          displayValue: "Mathematics",
-          choiceType: "CHECK",
-          score: 10.0,
-        },
-        {
-          id: uuidv4(),
-          choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-          name: "Science",
-          displayValue: "Science",
-          choiceType: "CHECK",
-          score: 10.0,
-        },
-        {
-          id: uuidv4(),
-          choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-          name: "History",
-          displayValue: "History",
-          choiceType: "CHECK",
-          score: 10.0,
-        },
-      ],
-      questionText: "Pick your interest Topics",
-    },
-  ],
-  subCategories: [
-    {
-      id: uuidv4(),
-      name: "Sub Category with only Questions",
-      hasQuestions: true,
-      hasSubCategories: false,
-      intScore: null,
-      percentScore: null,
-      level: "Level 2",
-      weightage: 15,
-      questions: [
-        {
-          id: uuidv4(),
-          questionTypeList: [
-            "TEXT",
-            "DROPDOWN",
-            "RADIO",
-            "MULTICHECK",
-            "INTEGER",
-            "NUMBER",
-          ],
-          isRequired: null,
-          questionType: "TEXT",
-          defaultAnswer: null,
-          answer: {
-            textAnswer: "Rohit Kumar",
-            intAnswer: null,
-            floatAnswer: null,
-            selectedChoices: null,
-            evalScore: null,
-          },
-          choices: null,
-          questionText: "What is your name",
-        },
-        {
-          id: uuidv4(),
-          questionTypeList: [
-            "TEXT",
-            "DROPDOWN",
-            "RADIO",
-            "MULTICHECK",
-            "INTEGER",
-            "NUMBER",
-          ],
-          isRequired: null,
-          questionType: "INTEGER",
-          defaultAnswer: null,
-          answer: {
-            textAnswer: null,
-            intAnswer: 32,
-            floatAnswer: null,
-            selectedChoices: null,
-            evalScore: null,
-          },
-          choices: null,
-          questionText: "What is your age",
-        },
-        {
-          id: uuidv4(),
-          questionTypeList: [
-            "TEXT",
-            "DROPDOWN",
-            "RADIO",
-            "MULTICHECK",
-            "INTEGER",
-            "NUMBER",
-          ],
-          isRequired: null,
-          questionType: "MULTICHECK",
-          defaultAnswer: null,
-          answer: {
-            textAnswer: null,
-            intAnswer: null,
-            floatAnswer: null,
-            selectedChoices: [
-              {
-                id: uuidv4(),
-                choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-                name: "Mathematics",
-                displayValue: "Mathematics",
-                choiceType: "CHECK",
-                score: 10.0,
-              },
-              {
-                id: uuidv4(),
-                choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-                name: "Science",
-                displayValue: "Science",
-                choiceType: "CHECK",
-                score: 10.0,
-              },
-              {
-                id: uuidv4(),
-                choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-                name: "History",
-                displayValue: "History",
-                choiceType: "CHECK",
-                score: 10.0,
-              },
-            ],
-            evalScore: null,
-          },
-          choices: [
-            {
-              id: uuidv4(),
-              choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-              name: "Mathematics",
-              displayValue: "Mathematics",
-              choiceType: "CHECK",
-              score: 10.0,
-            },
-            {
-              id: uuidv4(),
-              choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-              name: "Science",
-              displayValue: "Science",
-              choiceType: "CHECK",
-              score: 10.0,
-            },
-            {
-              id: uuidv4(),
-              choiceTypeList: ["TEXT", "RADIO", "CHECK", "INTEGER", "NUMBER"],
-              name: "History",
-              displayValue: "History",
-              choiceType: "CHECK",
-              score: 10.0,
-            },
-          ],
-          questionText: "Pick your interest Topics",
-        },
-      ],
-      subCategories: null,
-    },
-    {
-      id: uuidv4(),
-      name: "Sub Category with Questions and Sub-Category",
+      first: "category -4",
       hasQuestions: true,
       hasSubCategories: true,
       intScore: null,
       percentScore: null,
-      level: "Level 2",
-      weightage: 20,
+      level: "Level 1",
+      weightage: 40,
       questions: [
         {
           id: uuidv4(),
@@ -401,12 +731,12 @@ const sampleCategories = {
       subCategories: [
         {
           id: uuidv4(),
-          name: "Super Sub Category with only Questions",
+          name: "Sub Category with only Questions",
           hasQuestions: true,
           hasSubCategories: false,
           intScore: null,
           percentScore: null,
-          level: "Level 3",
+          level: "Level 2",
           weightage: 15,
           questions: [
             {
@@ -567,35 +897,346 @@ const sampleCategories = {
           ],
           subCategories: null,
         },
+        {
+          id: uuidv4(),
+          name: "Sub Category with Questions and Sub-Category",
+          hasQuestions: true,
+          hasSubCategories: true,
+          intScore: null,
+          percentScore: null,
+          level: "Level 2",
+          weightage: 20,
+          questions: [
+            {
+              id: uuidv4(),
+              questionTypeList: [
+                "TEXT",
+                "DROPDOWN",
+                "RADIO",
+                "MULTICHECK",
+                "INTEGER",
+                "NUMBER",
+              ],
+              isRequired: null,
+              questionType: "TEXT",
+              defaultAnswer: null,
+              answer: {
+                textAnswer: "Rohit Kumar",
+                intAnswer: null,
+                floatAnswer: null,
+                selectedChoices: null,
+                evalScore: null,
+              },
+              choices: null,
+              questionText: "What is your name",
+            },
+            {
+              id: uuidv4(),
+              questionTypeList: [
+                "TEXT",
+                "DROPDOWN",
+                "RADIO",
+                "MULTICHECK",
+                "INTEGER",
+                "NUMBER",
+              ],
+              isRequired: null,
+              questionType: "INTEGER",
+              defaultAnswer: null,
+              answer: {
+                textAnswer: null,
+                intAnswer: 32,
+                floatAnswer: null,
+                selectedChoices: null,
+                evalScore: null,
+              },
+              choices: null,
+              questionText: "What is your age",
+            },
+            {
+              id: uuidv4(),
+              questionTypeList: [
+                "TEXT",
+                "DROPDOWN",
+                "RADIO",
+                "MULTICHECK",
+                "INTEGER",
+                "NUMBER",
+              ],
+              isRequired: null,
+              questionType: "MULTICHECK",
+              defaultAnswer: null,
+              answer: {
+                textAnswer: null,
+                intAnswer: null,
+                floatAnswer: null,
+                selectedChoices: [
+                  {
+                    id: uuidv4(),
+                    choiceTypeList: [
+                      "TEXT",
+                      "RADIO",
+                      "CHECK",
+                      "INTEGER",
+                      "NUMBER",
+                    ],
+                    name: "Mathematics",
+                    displayValue: "Mathematics",
+                    choiceType: "CHECK",
+                    score: 10.0,
+                  },
+                  {
+                    id: uuidv4(),
+                    choiceTypeList: [
+                      "TEXT",
+                      "RADIO",
+                      "CHECK",
+                      "INTEGER",
+                      "NUMBER",
+                    ],
+                    name: "Science",
+                    displayValue: "Science",
+                    choiceType: "CHECK",
+                    score: 10.0,
+                  },
+                  {
+                    id: uuidv4(),
+                    choiceTypeList: [
+                      "TEXT",
+                      "RADIO",
+                      "CHECK",
+                      "INTEGER",
+                      "NUMBER",
+                    ],
+                    name: "History",
+                    displayValue: "History",
+                    choiceType: "CHECK",
+                    score: 10.0,
+                  },
+                ],
+                evalScore: null,
+              },
+              choices: [
+                {
+                  id: uuidv4(),
+                  choiceTypeList: [
+                    "TEXT",
+                    "RADIO",
+                    "CHECK",
+                    "INTEGER",
+                    "NUMBER",
+                  ],
+                  name: "Mathematics",
+                  displayValue: "Mathematics",
+                  choiceType: "CHECK",
+                  score: 10.0,
+                },
+                {
+                  id: uuidv4(),
+                  choiceTypeList: [
+                    "TEXT",
+                    "RADIO",
+                    "CHECK",
+                    "INTEGER",
+                    "NUMBER",
+                  ],
+                  name: "Science",
+                  displayValue: "Science",
+                  choiceType: "CHECK",
+                  score: 10.0,
+                },
+                {
+                  id: uuidv4(),
+                  choiceTypeList: [
+                    "TEXT",
+                    "RADIO",
+                    "CHECK",
+                    "INTEGER",
+                    "NUMBER",
+                  ],
+                  name: "History",
+                  displayValue: "History",
+                  choiceType: "CHECK",
+                  score: 10.0,
+                },
+              ],
+              questionText: "Pick your interest Topics",
+            },
+          ],
+          subCategories: [
+            {
+              id: uuidv4(),
+              name: "Super Sub Category with only Questions",
+              hasQuestions: true,
+              hasSubCategories: false,
+              intScore: null,
+              percentScore: null,
+              level: "Level 3",
+              weightage: 15,
+              questions: [
+                {
+                  id: uuidv4(),
+                  questionTypeList: [
+                    "TEXT",
+                    "DROPDOWN",
+                    "RADIO",
+                    "MULTICHECK",
+                    "INTEGER",
+                    "NUMBER",
+                  ],
+                  isRequired: null,
+                  questionType: "TEXT",
+                  defaultAnswer: null,
+                  answer: {
+                    textAnswer: "Rohit Kumar",
+                    intAnswer: null,
+                    floatAnswer: null,
+                    selectedChoices: null,
+                    evalScore: null,
+                  },
+                  choices: null,
+                  questionText: "What is your name",
+                },
+                {
+                  id: uuidv4(),
+                  questionTypeList: [
+                    "TEXT",
+                    "DROPDOWN",
+                    "RADIO",
+                    "MULTICHECK",
+                    "INTEGER",
+                    "NUMBER",
+                  ],
+                  isRequired: null,
+                  questionType: "INTEGER",
+                  defaultAnswer: null,
+                  answer: {
+                    textAnswer: null,
+                    intAnswer: 32,
+                    floatAnswer: null,
+                    selectedChoices: null,
+                    evalScore: null,
+                  },
+                  choices: null,
+                  questionText: "What is your age",
+                },
+                {
+                  id: uuidv4(),
+                  questionTypeList: [
+                    "TEXT",
+                    "DROPDOWN",
+                    "RADIO",
+                    "MULTICHECK",
+                    "INTEGER",
+                    "NUMBER",
+                  ],
+                  isRequired: null,
+                  questionType: "MULTICHECK",
+                  defaultAnswer: null,
+                  answer: {
+                    textAnswer: null,
+                    intAnswer: null,
+                    floatAnswer: null,
+                    selectedChoices: [
+                      {
+                        id: uuidv4(),
+                        choiceTypeList: [
+                          "TEXT",
+                          "RADIO",
+                          "CHECK",
+                          "INTEGER",
+                          "NUMBER",
+                        ],
+                        name: "Mathematics",
+                        displayValue: "Mathematics",
+                        choiceType: "CHECK",
+                        score: 10.0,
+                      },
+                      {
+                        id: uuidv4(),
+                        choiceTypeList: [
+                          "TEXT",
+                          "RADIO",
+                          "CHECK",
+                          "INTEGER",
+                          "NUMBER",
+                        ],
+                        name: "Science",
+                        displayValue: "Science",
+                        choiceType: "CHECK",
+                        score: 10.0,
+                      },
+                      {
+                        id: uuidv4(),
+                        choiceTypeList: [
+                          "TEXT",
+                          "RADIO",
+                          "CHECK",
+                          "INTEGER",
+                          "NUMBER",
+                        ],
+                        name: "History",
+                        displayValue: "History",
+                        choiceType: "CHECK",
+                        score: 10.0,
+                      },
+                    ],
+                    evalScore: null,
+                  },
+                  choices: [
+                    {
+                      id: uuidv4(),
+                      choiceTypeList: [
+                        "TEXT",
+                        "RADIO",
+                        "CHECK",
+                        "INTEGER",
+                        "NUMBER",
+                      ],
+                      name: "Mathematics",
+                      displayValue: "Mathematics",
+                      choiceType: "CHECK",
+                      score: 10.0,
+                    },
+                    {
+                      id: uuidv4(),
+                      choiceTypeList: [
+                        "TEXT",
+                        "RADIO",
+                        "CHECK",
+                        "INTEGER",
+                        "NUMBER",
+                      ],
+                      name: "Science",
+                      displayValue: "Science",
+                      choiceType: "CHECK",
+                      score: 10.0,
+                    },
+                    {
+                      id: uuidv4(),
+                      choiceTypeList: [
+                        "TEXT",
+                        "RADIO",
+                        "CHECK",
+                        "INTEGER",
+                        "NUMBER",
+                      ],
+                      name: "History",
+                      displayValue: "History",
+                      choiceType: "CHECK",
+                      score: 10.0,
+                    },
+                  ],
+                  questionText: "Pick your interest Topics",
+                },
+              ],
+              subCategories: null,
+            },
+          ],
+        },
       ],
-    },
-  ],
-};
-export const UserContext = createContext();
-
-class CatIn extends Component {
-  state = {
-    measureIn: "number",
-    activeId: null,
-    isActive: false,
-    routView: "/clintside",
-    theme: false,
-  };
-  componentDidMount() {
-    const { history } = this.props;
-    const which =
-      history.location.pathname === "/default" ? "/clintside" : "/default";
-    this.setState({ routView: which });
-  }
-  currentValue = (event) => {
-    this.setState({ measureIn: event.target.value });
-  };
-  isClicking = (id) =>
-    this.setState((prev) => ({ activeId: id, isActive: !prev.isActive }));
-
-  addCategory = (name) => {
-    const { setRendering, rendering } = this.props;
-    const editCat = { ...sampleCategories, first: name };
+    };
+    const editCat = { ...sampleCategories, first: name, ...checkedDetails };
     const getFromStore = JSON.parse(localStorage.getItem("jsonData"));
 
     getFromStore.categories.push(editCat);
@@ -603,10 +1244,18 @@ class CatIn extends Component {
     setRendering(!rendering);
     // window.location.reload(false);
   };
+  reRenderThisPages = () => {
+    const { setRendering, rendering } = this.props;
+
+    setRendering(!rendering);
+    console.log("kumara rendered");
+  };
   render() {
     const { measureIn, routView, theme } = this.state;
-    const { jsonDatas } = this.props;
-    console.log(this.props);
+    const { jsonDatas, history } = this.props;
+
+    const pathName = history.location.pathname;
+
     const namePre = routView === "/clintside" ? "clint view" : "default view";
 
     return (
@@ -618,25 +1267,27 @@ class CatIn extends Component {
               <a href={routView} className="preview">
                 {namePre} <i class="fa-solid fa-up-right-from-square"></i>
               </a>
-              <pre className="text-right">
-                MEASURE TYPE :
-                <select
-                  className="measure-type"
-                  value={measureIn}
-                  onChange={this.currentValue}
-                >
-                  {jsonDatas.measureTypeList.map((each) => {
-                    return (
-                      <option
-                        key={uuidv4()}
-                        value={each === "NUMBER" ? "number" : "percent"}
-                      >
-                        {each}
-                      </option>
-                    );
-                  })}
-                </select>
-              </pre>
+              {pathName === "/default" && (
+                <pre className="text-right">
+                  MEASURE TYPE :
+                  <select
+                    className="measure-type"
+                    value={measureIn}
+                    onChange={this.currentValue}
+                  >
+                    {jsonDatas.measureTypeList.map((each) => {
+                      return (
+                        <option
+                          key={uuidv4()}
+                          value={each === "NUMBER" ? "number" : "percent"}
+                        >
+                          {each}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </pre>
+              )}
               <nav className="d-flex align-items-center justify-content-between mb-1">
                 <label className="switch">
                   <span className="sun">
@@ -665,7 +1316,9 @@ class CatIn extends Component {
                   />
                   <span className="slider"></span>
                 </label>
-                <CatPopup addCategory={this.addCategory} />
+                {pathName === "/default" && (
+                  <CatPopup addCategory={this.addCategory} />
+                )}
               </nav>
 
               <ul className="category-list">
@@ -673,6 +1326,7 @@ class CatIn extends Component {
                   <CategoryList
                     key={each.id}
                     categoryDetail={each}
+                    reRenderThisPages={this.reRenderThisPages}
                     state={this.state}
                     currentId={index}
                     btnClicked={this.isClicking}

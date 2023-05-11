@@ -1,4 +1,5 @@
 import React, { useState, useId } from "react";
+import { useLocation } from "react-router-dom";
 import "../index.css";
 
 const CheckChoice = (props) => {
@@ -6,7 +7,9 @@ const CheckChoice = (props) => {
   const { name } = checkDetail;
   const uniqId = useId();
   const [isEditable, setEdit] = useState(false);
-  console.log(isEditable);
+  //  path for default
+  const { pathname } = useLocation();
+  const isDefaultPage = pathname === "/default";
   const [textEdit, setText] = useState(name);
   return (
     <li className="ml-3">
@@ -22,25 +25,27 @@ const CheckChoice = (props) => {
         />
       )}
       {!isEditable && <label htmlFor={`${name}-${uniqId}`}>{textEdit}</label>}
-      <button
-        title="edit"
-        type="button"
-        className="tooltips"
-        onClick={() => setEdit(!isEditable)}
-      >
-        {isEditable && (
-          <i
-            class="fa-solid fa-check "
-            style={{ color: "#25710a", fontSize: "15px" }}
-          ></i>
-        )}
-        {!isEditable && (
-          <i
-            className="fa-solid fa-pen"
-            style={{ color: "#25710a", fontSize: "13px" }}
-          ></i>
-        )}
-      </button>
+      {isDefaultPage && (
+        <button
+          title="edit"
+          type="button"
+          className="tooltips"
+          onClick={() => setEdit(!isEditable)}
+        >
+          {isEditable && (
+            <i
+              class="fa-solid fa-check "
+              style={{ color: "#25710a", fontSize: "15px" }}
+            ></i>
+          )}
+          {!isEditable && (
+            <i
+              className="fa-solid fa-pen"
+              style={{ color: "#25710a", fontSize: "13px" }}
+            ></i>
+          )}
+        </button>
+      )}
     </li>
   );
 };
