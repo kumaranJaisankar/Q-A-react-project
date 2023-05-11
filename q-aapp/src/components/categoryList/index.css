@@ -12,6 +12,7 @@
 .pre-class {
   color: var(--main-color);
   font-weight: bolder;
+  cursor: alias;
 }
 .c-name {
   color: black;
