@@ -19,14 +19,17 @@ import "./index.css";
 import { UserContext } from "../CatIn/catin";
 import RadioChoice from "./choices/radioChoice";
 import CheckChoice from "./choices/checkChoice";
+import IntAns from "./intAns";
+import TextAns from "./textAns";
 
 const AnsList = (props) => {
+  const [render, setRender] = useState(false);
   const { questionDetails, setRendering, isRendering } = props;
   const { questionText, questionType, choices, questionTypeList, id } =
     questionDetails;
   const uniqId = useId();
   const theme = useContext(UserContext);
-  const xMark = theme ? "white" : "black";
+  const xMark = theme ? "white" : "#0909095c";
   //  path name
   const { pathname } = useLocation();
   const isDefaultPage = pathname === "/default";
@@ -47,21 +50,37 @@ const AnsList = (props) => {
   const typeOfQus = (type, choices) => {
     switch (type) {
       case "TEXT":
-        return <input type="text" placeholder="Enter Your Ans.." />;
+        return <TextAns currentId={id} setRender={setRender} render={render} />;
 
       case "INTEGER":
-        return <input type="number" className="wid" placeholder="" />;
+        return <IntAns currentId={id} setRender={setRender} render={render} />;
 
       case "MULTICHECK":
         if (choices.length < 3) {
           const extraChoise = [...choices, { name: "Positive" }];
           const chois = extraChoise.map((each) => {
-            return <CheckChoice key={v4()} checkDetail={each} />;
+            return (
+              <CheckChoice
+                key={v4()}
+                checkDetail={each}
+                currentId={id}
+                setRender={setRender}
+                render={render}
+              />
+            );
           });
           return chois;
         } else {
           const cho = choices.map((each) => {
-            return <CheckChoice key={v4()} checkDetail={each} />;
+            return (
+              <CheckChoice
+                key={v4()}
+                checkDetail={each}
+                currentId={id}
+                setRender={setRender}
+                render={render}
+              />
+            );
           });
 
           return cho;
@@ -71,13 +90,25 @@ const AnsList = (props) => {
           const extraChoise = [...choices];
           extraChoise.pop();
           const radioCho = extraChoise.map((each) => (
-            <RadioChoice key={v4()} choiceDetail={each} />
+            <RadioChoice
+              key={v4()}
+              choiceDetail={each}
+              currentId={id}
+              setRender={setRender}
+              render={render}
+            />
           ));
 
           return radioCho;
         } else {
           const radioCho = choices.map((each) => (
-            <RadioChoice key={v4()} choiceDetail={each} />
+            <RadioChoice
+              key={v4()}
+              currentId={id}
+              choiceDetail={each}
+              setRender={setRender}
+              render={render}
+            />
           ));
 
           return radioCho;

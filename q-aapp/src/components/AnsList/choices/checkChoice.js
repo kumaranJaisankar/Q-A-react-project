@@ -1,19 +1,60 @@
-import React, { useState, useId } from "react";
+import React, { useState, useId, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "../index.css";
 
 const CheckChoice = (props) => {
-  const { checkDetail } = props;
-  const { name } = checkDetail;
+  const { checkDetail, setRender, render, currentId } = props;
+  const checkBoxRef = useRef();
+  const { name, id } = checkDetail;
   const uniqId = useId();
   const [isEditable, setEdit] = useState(false);
   //  path for default
   const { pathname } = useLocation();
   const isDefaultPage = pathname === "/default";
   const [textEdit, setText] = useState(name);
+
+  const checkBoxChange = () => {
+    const fromlocalStoreQuestions = JSON.parse(
+      localStorage.getItem("addQuest")
+    );
+    const firstFilter = fromlocalStoreQuestions.filter(
+      (each) => each.id === currentId
+    );
+    const fromFirstFilter = firstFilter[0];
+    const beforeFilter = [...firstFilter[0].answer.selectedChoices];
+
+    const isTrue = checkBoxRef.current.checked;
+    if (isTrue) {
+      fromFirstFilter.answer.selectedChoices = [...beforeFilter, id];
+      const unFilter = fromlocalStoreQuestions.filter(
+        (each) => each.id !== currentId
+      );
+      localStorage.setItem(
+        "addQuest",
+        JSON.stringify([...firstFilter, ...unFilter])
+      );
+    } else {
+      console.log("dummy");
+    }
+    setRender(!render);
+  };
+  const fromlocalStoreQuestions = JSON.parse(localStorage.getItem("addQuest"));
+  const firstFilter = fromlocalStoreQuestions.filter(
+    (each) => each.id === currentId
+  );
+  function isCheckedEach(element) {
+    return element === id;
+  }
   return (
     <li className="ml-3">
-      <input type="checkbox" value={name} className="mr-1" />
+      <input
+        checked={firstFilter[0].answer.selectedChoices.some(isCheckedEach)}
+        ref={checkBoxRef}
+        type="checkbox"
+        value={name}
+        className="mr-1"
+        onChange={checkBoxChange}
+      />
 
       {isEditable && (
         <input

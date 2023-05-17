@@ -766,14 +766,28 @@ const CategoryList = (props) => {
   const addThisQuest = (quest) => {
     clickTogle({ ...toggler, ans: !toggler.ans });
   };
+  const forPreventDuplicate = (prev, ele) => {
+    const filtering = prev.filter((each) => each.id === ele.id);
+    if (filtering.length > 0) {
+      return {};
+    } else {
+      return { ...ele, currentId: id };
+    }
+  };
 
   if (questions !== null) {
     if (id !== undefined) {
-      const withCurrentId = questions.map((element) => ({
-        ...element,
-        currentId: id,
-      }));
       const previousQuestions = JSON.parse(localStorage.getItem("addQuest"));
+      const withCurrentId = questions.map((element) => {
+        if (previousQuestions !== null) {
+          return forPreventDuplicate(previousQuestions, element);
+        } else {
+          return {
+            ...element,
+            currentId: id,
+          };
+        }
+      });
       let arr = [...withCurrentId];
       if (previousQuestions !== null) {
         previousQuestions.forEach((datum) => {
