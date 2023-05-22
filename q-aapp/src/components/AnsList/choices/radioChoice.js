@@ -1,7 +1,7 @@
 import React, { useState, useId, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import "../index.css";
-const getValue = JSON.parse(sessionStorage.getItem("storeText"));
+// const getValue = JSON.parse(sessionStorage.getItem("storeText"));
 const RadioChoice = (props) => {
   console.log(props, "kum");
   const { choiceDetail, setRender, render, currentId } = props;
@@ -21,16 +21,27 @@ const RadioChoice = (props) => {
     (each) => each.id === currentId
   );
   const radioChecking = () => {
-    const fromFirstFilter = firstFilter[0];
-    fromFirstFilter.answer.selectedChoices = id;
-    const unFilter = fromlocalStoreQuestions.filter(
-      (each) => each.id !== currentId
-    );
-    const extraVal = [...firstFilter, ...unFilter];
-    extraVal.sort();
-    console.log(extraVal);
+    const forEachEle = fromlocalStoreQuestions.map((each) => {
+      if (each.id === currentId) {
+        return {
+          ...each,
+          answer: { ...each.answer, selectedChoices: id },
+        };
+      } else {
+        return each;
+      }
+    });
+    localStorage.setItem("addQuest", JSON.stringify(forEachEle));
+    // const fromFirstFilter = firstFilter[0];
+    // fromFirstFilter.answer.selectedChoices = id;
+    // const unFilter = fromlocalStoreQuestions.filter(
+    //   (each) => each.id !== currentId
+    // );
+    // const extraVal = [...firstFilter, ...unFilter];
+    // extraVal.sort();
+    // console.log(extraVal);
 
-    localStorage.setItem("addQuest", JSON.stringify(extraVal));
+    // localStorage.setItem("addQuest", JSON.stringify(extraVal));
 
     setRender(!render);
   };
