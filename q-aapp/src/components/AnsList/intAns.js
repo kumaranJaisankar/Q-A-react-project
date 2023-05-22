@@ -12,13 +12,24 @@ const IntAns = (props) => {
   const [intVal, setinval] = useState(baforeToState);
   const onIntVal = (e) => {
     setinval(e.target.value);
-    firstFilter[0].answer.textAnswer = Number(e.target.value);
-    const unFilter = fromlocalStoreQuestions.filter(
-      (each) => each.id !== currentId
-    );
-    const extraVal = [...firstFilter, ...unFilter];
-    extraVal.sort();
-    localStorage.setItem("addQuest", JSON.stringify(extraVal));
+    const forEachEle = fromlocalStoreQuestions.map((each) => {
+      if (each.id === currentId) {
+        return {
+          ...each,
+          answer: { ...each.answer, textAnswer: e.target.value },
+        };
+      } else {
+        return each;
+      }
+    });
+    localStorage.setItem("addQuest", JSON.stringify(forEachEle));
+    // firstFilter[0].answer.textAnswer = Number(e.target.value);
+    // const unFilter = fromlocalStoreQuestions.filter(
+    //   (each) => each.id !== currentId
+    // );
+    // const extraVal = [...firstFilter, ...unFilter];
+    // extraVal.sort();
+    // localStorage.setItem("addQuest", JSON.stringify(extraVal));
   };
   return (
     <>

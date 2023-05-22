@@ -766,28 +766,24 @@ const CategoryList = (props) => {
   const addThisQuest = (quest) => {
     clickTogle({ ...toggler, ans: !toggler.ans });
   };
-  const forPreventDuplicate = (prev, ele) => {
-    const filtering = prev.filter((each) => each.id === ele.id);
-    if (filtering.length > 0) {
-      return {};
-    } else {
-      return { ...ele, currentId: id };
-    }
-  };
+  // const forPreventDuplicate = (prev) => {
+  //   const filtering = prev.some((each) => each.currentId === id);
+  //   console.log(filtering)
+  //   if (filtering.length > 0) {
+  //     return {};
+  //   } else {
+  //     return { ...ele, currentId: id };
+  //   }
+  // };
 
   if (questions !== null) {
     if (id !== undefined) {
       const previousQuestions = JSON.parse(localStorage.getItem("addQuest"));
-      const withCurrentId = questions.map((element) => {
-        if (previousQuestions !== null) {
-          return forPreventDuplicate(previousQuestions, element);
-        } else {
-          return {
-            ...element,
-            currentId: id,
-          };
-        }
-      });
+      const isNullOr = previousQuestions === null ? [] : previousQuestions;
+      const isContainSame = isNullOr.some((ques) => ques.currentId === id);
+      const withCurrentId = isContainSame
+        ? []
+        : questions.map((each) => ({ ...each, currentId: id }));
       let arr = [...withCurrentId];
       if (previousQuestions !== null) {
         previousQuestions.forEach((datum) => {
@@ -1131,6 +1127,7 @@ const CategoryList = (props) => {
                       {isDefaultPage && (
                         <div className="w-100 text-center">
                           {" "}
+                         
                           <AddSubCategory onAddSubCategory={onAddSubCategory} />
                         </div>
                       )}

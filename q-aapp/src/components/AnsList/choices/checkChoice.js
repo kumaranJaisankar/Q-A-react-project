@@ -24,17 +24,46 @@ const CheckChoice = (props) => {
     const beforeFilter = [...firstFilter[0].answer.selectedChoices];
 
     const isTrue = checkBoxRef.current.checked;
+    let forEachEle = [];
     if (isTrue) {
-      fromFirstFilter.answer.selectedChoices = [...beforeFilter, id];
-      const unFilter = fromlocalStoreQuestions.filter(
-        (each) => each.id !== currentId
-      );
-      localStorage.setItem(
-        "addQuest",
-        JSON.stringify([...firstFilter, ...unFilter])
-      );
+      forEachEle = fromlocalStoreQuestions.map((each) => {
+        if (each.id === currentId) {
+          console.log(each, "kjabvhjabb");
+          return {
+            ...each,
+            answer: { ...each.answer, selectedChoices: [...beforeFilter, id] },
+          };
+        } else {
+          return each;
+        }
+      });
+
+      localStorage.setItem("addQuest", JSON.stringify(forEachEle));
+      // fromFirstFilter.answer.selectedChoices = [...beforeFilter, id];
+      // const unFilter = fromlocalStoreQuestions.filter(
+      //   (each) => each.id !== currentId
+      // );
+      // localStorage.setItem(
+      //   "addQuest",
+      //   JSON.stringify([...firstFilter, ...unFilter])
+      // );
     } else {
-      console.log("dummy");
+      forEachEle = fromlocalStoreQuestions.map((each) => {
+        if (each.id === currentId) {
+          console.log(each, "kjabvhjabb");
+          return {
+            ...each,
+            answer: {
+              ...each.answer,
+              selectedChoices: beforeFilter.filter((each) => each !== id),
+            },
+          };
+        } else {
+          return each;
+        }
+      });
+
+      localStorage.setItem("addQuest", JSON.stringify(forEachEle));
     }
     setRender(!render);
   };

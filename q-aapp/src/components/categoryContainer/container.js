@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import AnsList from "../AnsList/ansList";
@@ -17,8 +17,11 @@ import {
 } from "@chakra-ui/react";
 
 const CategoryCont = (props) => {
+  const [isRendering, setRendering] = useState(false);
+
   const { categoryDetail } = props;
   const {
+    id,
     name,
     questions,
     subCategories,
@@ -33,6 +36,39 @@ const CategoryCont = (props) => {
 
   const cancelRef = useRef();
   const cancelRefs = useRef();
+  if (questions !== null) {
+    if (id !== undefined) {
+      const previousQuestions = JSON.parse(localStorage.getItem("addQuest"));
+      const isNullOr = previousQuestions === null ? [] : previousQuestions;
+      const isContainSame = isNullOr.some((ques) => ques.currentId === id);
+      const withCurrentId = isContainSame
+        ? []
+        : questions.map((each) => ({ ...each, currentId: id }));
+      let arr = [...withCurrentId];
+      if (previousQuestions !== null) {
+        previousQuestions.forEach((datum) => {
+          if (!arr.find((item) => item.id === datum.id)) {
+            arr.push(datum);
+          }
+        });
+      }
+      localStorage.setItem("addQuest", JSON.stringify(arr));
+    }
+  }
+  const seprateQuestion = (pk) => {
+    const questionFromLocal = JSON.parse(localStorage.getItem("addQuest"));
+    let questArray = [];
+    if (questionFromLocal !== null) {
+      questArray = questionFromLocal.filter((each) => each.currentId === pk);
+      // for (let k of store) {
+      //   if (k.currentId === pk) {
+      //     questArray.push(k);
+      //   }
+      // }
+    }
+    return questArray;
+  };
+
   return (
     <div className="border-style mt-2">
       <hr />
@@ -77,8 +113,13 @@ const CategoryCont = (props) => {
             </div>
 
             <ol className="ans-list">
-              {questions.map((each) => (
-                <AnsList key={v4()} questionDetails={each} />
+              {seprateQuestion(id).map((each) => (
+                <AnsList
+                  key={v4()}
+                  questionDetails={each}
+                  setRendering={setRendering}
+                  isRendering={isRendering}
+                />
               ))}
             </ol>
             {hasSubCategories === false && (
